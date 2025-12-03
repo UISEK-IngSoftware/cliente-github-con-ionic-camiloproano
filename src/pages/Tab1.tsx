@@ -1,13 +1,14 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
+import RepoItem from '../components/RepoItem';
 
 const Tab1: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Lista de repositorios</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -16,7 +17,20 @@ const Tab1: React.FC = () => {
             <IonTitle size="large">Tab 1</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
+        <IonList>
+          <RepoItem
+            name="android-project"
+            imageUrl="https://upload.wikimedia.org/wikipedia/commons/3/3e/Android_logo_2019.png"
+          />
+          <RepoItem
+            name="ios-project"
+            imageUrl="https://static.vecteezy.com/system/resources/thumbnails/021/496/368/small_2x/ios-icon-logo-software-phone-apple-symbol-with-name-black-design-mobile-illustration-free-vector.jpg"
+          />
+          <RepoItem
+            name="ionic-project"
+            imageUrl="https://cdn2.f-cdn.com/contestentries/1479674/33588341/5c86914c1921d_thumb900.jpg"
+          />  
+        </IonList>
       </IonContent>
     </IonPage>
   );
