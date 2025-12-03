@@ -3,9 +3,9 @@
 
 ## Información del Estudiante
 
-- **Nombre:** [Tu nombre completo aquí]
-- **Carrera:** [Tu carrera]
-- **Fecha de inicio:** [Fecha]
+- **Nombre:** Camilo Proaño
+- **Carrera:** Ingeniería en Informática
+- **Fecha de inicio:** 3/12/2025
 
 ---
 
