@@ -28,7 +28,7 @@ const Tab1: React.FC = () => {
           />
           <RepoItem
             name="ionic-project"
-            imageUrl="https://cdn2.f-cdn.com/contestentries/1479674/33588341/5c86914c1921d_thumb900.jpg"
+            imageUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Ionic_Logo.svg/1280px-Ionic_Logo.svg.png"
           />  
         </IonList>
       </IonContent>
