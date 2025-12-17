@@ -1,30 +1,45 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
+import { getUserInfo } from '../services/GithubService';
+import { UserInfo } from '../interfaces/UserInfo';
+import { useState } from 'react';
 import './Tab3.css';
 
 const Tab3: React.FC = () => {
+
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  const loadUserInfo = async () => {
+    const info = await getUserInfo();
+    setUserInfo(info);
+  };
+
+  useIonViewDidEnter(() => {
+    loadUserInfo();
+  })
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Perfil de usuarios</IonTitle>
+          <IonTitle>Perfil de usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 3</IonTitle>
+            <IonTitle size="large">Perfil de usuario</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonCard>
-          <img alt="User Image" src="https://cdn-icons-png.flaticon.com/512/9187/9187532.png" />
+          <img alt={userInfo?.name}
+          src={userInfo?.avatar_url}/>
           <IonCardHeader>
-            <IonCardTitle>Camilo Proaño</IonCardTitle>
-            <IonCardSubtitle>camiloproano</IonCardSubtitle>
+            <IonCardTitle>{userInfo?.name}</IonCardTitle>
+            <IonCardSubtitle>{userInfo?.login}</IonCardSubtitle>
           </IonCardHeader>
-
           <IonCardContent>
-            Estudiante de Informática de 5to semestre en la UISEK.
+            {userInfo?.bio}
           </IonCardContent>
         </IonCard>
       </IonContent>
