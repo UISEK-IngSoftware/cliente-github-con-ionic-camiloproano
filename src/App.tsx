@@ -68,11 +68,11 @@ const App: React.FC = () => (
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon aria-hidden="true" icon={codeSlashOutline} />
-            <IonLabel>Repositorios</IonLabel>
+            <IonLabel>Lista de repositorios</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon aria-hidden="true" icon={addCircleOutline} />
-            <IonLabel>Crear repo</IonLabel>
+            <IonLabel>Crear repositorio</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon aria-hidden="true" icon={personCircleOutline} />
