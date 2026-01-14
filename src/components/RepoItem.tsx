@@ -1,21 +1,44 @@
-import { IonItem, IonLabel, IonThumbnail} from '@ionic/react';
-import './RepoItem.css';
+import { IonItem, IonLabel, IonThumbnail, IonItemSliding, IonItemOptions, IonItemOption, IonIcon } from '@ionic/react';
+import { trashOutline, createOutline } from 'ionicons/icons';
 import { RepositoryItem } from '../interfaces/RepositoryItem';
 
-const RepoItem: React.FC<{ repo: RepositoryItem }> = ({ repo }) => {
+interface Props {
+  repo: RepositoryItem;
+  onDelete: () => void;
+  onEdit: () => void;
+}
+
+const RepoItem: React.FC<Props> = ({ repo, onDelete, onEdit }) => {
   return (
-    <IonItem>
-      <IonThumbnail slot="start">
-        <img src={repo.imageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdU-I6fitNpzPYB8g50gQPJerE16Xcpzq8TQ&s" } alt="repo.name"/>
-      </IonThumbnail>
-      <IonLabel>
-        <h2>{repo.name}</h2>
-        <p>{repo.description}</p>
-        <p>Propietario: {repo.owner}</p>
-        <p>Lenguaje: {repo.language}</p>
-      </IonLabel>
-    </IonItem>
+    <IonItemSliding>
+      <IonItem button>
+        <IonThumbnail slot="start">
+          <img
+            src={repo.imageUrl || 'https://via.placeholder.com/100'}
+            alt={repo.name}
+          />
+        </IonThumbnail>
+
+        <IonLabel>
+          <h2>{repo.name}</h2>
+          <p>{repo.description}</p>
+          <p>Lenguaje: {repo.language}</p>
+        </IonLabel>
+      </IonItem>
+
+      <IonItemOptions side="end">
+        <IonItemOption color="warning" onClick={onEdit}>
+          <IonIcon slot="icon-only" icon={createOutline} />
+        </IonItemOption>
+
+        <IonItemOption color="danger" onClick={onDelete}>
+          <IonIcon slot="icon-only" icon={trashOutline} />
+        </IonItemOption>
+      </IonItemOptions>
+    </IonItemSliding>
   );
 };
 
 export default RepoItem;
+
+
