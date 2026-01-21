@@ -50,6 +50,7 @@ export const createRepository = async (repo: RepositoryItem) => {
         // 1️⃣ Crear repo (solo con nombre)
         const response = await githubApi.post("/user/repos", {
             name: repo.name,
+            description: repo.description || '',
             private: false
         });
 
