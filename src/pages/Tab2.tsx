@@ -1,15 +1,4 @@
-import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonInput,
-  IonTextarea,
-  IonLoading,
-  IonToast
-} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonTextarea, IonLoading, IonToast } from '@ionic/react';
 import { useHistory } from 'react-router';
 import './Tab2.css';
 import { RepositoryItem } from '../interfaces/RepositoryItem';
