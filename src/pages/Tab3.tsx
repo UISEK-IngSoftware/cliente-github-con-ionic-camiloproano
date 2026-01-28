@@ -7,15 +7,21 @@ import './Tab3.css';
 import { logOutOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import AuthService from '../services/AuthService';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Tab3: React.FC = () => {
-
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const loadUserInfo = async () => {
-    const info = await getUserInfo();
-    setUserInfo(info);
+    try {
+      setLoading(true);
+      const info = await getUserInfo();
+      setUserInfo(info);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useIonViewDidEnter(() => {
@@ -34,32 +40,42 @@ const Tab3: React.FC = () => {
           <IonTitle>Perfil de usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Perfil de usuario</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonCard>
-          <img alt={userInfo?.name}
-          src={userInfo?.avatar_url}/>
-          <IonCardHeader>
-            <IonCardTitle>{userInfo?.name}</IonCardTitle>
-            <IonCardSubtitle>{userInfo?.login}</IonCardSubtitle>
-          </IonCardHeader>
-          <IonCardContent>
-            {userInfo?.bio}
-          </IonCardContent>
-        </IonCard>
+
+        {userInfo && (
+          <IonCard>
+            <img
+              alt={userInfo.name}
+              src={userInfo.avatar_url}
+            />
+            <IonCardHeader>
+              <IonCardTitle>{userInfo.name}</IonCardTitle>
+              <IonCardSubtitle>{userInfo.login}</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              {userInfo.bio}
+            </IonCardContent>
+          </IonCard>
+        )}
 
         <IonButton
           expand="block"
           color="danger"
-          onClick={handleLogout} 
-          >
-            <IonIcon slot="start" icon={logOutOutline} />
-            Cerrar sesión
+          onClick={handleLogout}
+        >
+          <IonIcon slot="start" icon={logOutOutline} />
+          Cerrar sesión
         </IonButton>
+
+        {/* LOADING */}
+        <LoadingSpinner isOpen={loading} />
+        
       </IonContent>
     </IonPage>
   );

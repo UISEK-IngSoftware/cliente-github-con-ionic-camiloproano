@@ -1,5 +1,6 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonTextarea, IonLoading, IonToast } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonTextarea, IonToast } from '@ionic/react';
 import { useHistory } from 'react-router';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './Tab2.css';
 import { RepositoryItem } from '../interfaces/RepositoryItem';
 import { createRepository } from '../services/GithubService';
@@ -80,12 +81,6 @@ const Tab2: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        {/* Loading */}
-        <IonLoading
-          isOpen={loading}
-          message="Creando repositorio..."
-        />
-
         {/* Toast */}
         <IonToast
           isOpen={!!toastMessage}
@@ -125,6 +120,10 @@ const Tab2: React.FC = () => {
             Guardar
           </IonButton>
         </div>
+
+        {/* LOADING */}
+        <LoadingSpinner isOpen={loading} />
+
       </IonContent>
     </IonPage>
   );

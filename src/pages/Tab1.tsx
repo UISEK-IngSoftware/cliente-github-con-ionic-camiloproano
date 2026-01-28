@@ -1,14 +1,10 @@
-import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonLoading, IonToast, IonAlert, IonModal, IonButton, IonInput, IonIcon, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonToast, IonAlert, IonModal, IonButton, IonInput, IonIcon, useIonViewDidEnter } from '@ionic/react';
 import { useState } from 'react';
 import { refreshOutline } from 'ionicons/icons';
-
+import LoadingSpinner from '../components/LoadingSpinner';
 import RepoItem from '../components/RepoItem';
 import { RepositoryItem } from '../interfaces/RepositoryItem';
-import {
-  fetchRepositories,
-  deleteRepository,
-  updateRepository
-} from '../services/GithubService';
+import { fetchRepositories, deleteRepository, updateRepository } from '../services/GithubService';
 
 const Tab1: React.FC = () => {
   const [repos, setRepos] = useState<RepositoryItem[]>([]);
@@ -25,8 +21,11 @@ const Tab1: React.FC = () => {
 
   // Cargar repositorios
   const loadRepos = async () => {
+    if (loading) return; // evita doble carga
+
     setLoading(true);
     setError('');
+
     try {
       const data = await fetchRepositories();
       setRepos(data);
@@ -42,19 +41,23 @@ const Tab1: React.FC = () => {
     if (!repoToDelete || !repoToDelete.owner) return;
 
     try {
+      setLoading(true); // spinner durante DELETE
       await deleteRepository(repoToDelete.owner, repoToDelete.name);
       setRepoToDelete(null);
-      loadRepos();
+      await loadRepos(); // recarga lista con spinner
     } catch {
       setError('Error al eliminar repositorio');
+    } finally {
+      setLoading(false); // spinner OFF
     }
   };
 
-  // Guardar EDICIÓN (nombre + descripción)
+  // Guardar EDICIÓN
   const handleUpdate = async () => {
     if (!repoToEdit || !repoToEdit.owner) return;
 
     try {
+      setLoading(true); // spinner durante UPDATE
       await updateRepository(
         repoToEdit.owner,
         repoToEdit.name,
@@ -65,9 +68,11 @@ const Tab1: React.FC = () => {
       );
 
       setRepoToEdit(null);
-      loadRepos();
+      await loadRepos(); // recarga lista con spinner
     } catch {
       setError('Error al actualizar repositorio');
+    } finally {
+      setLoading(false); // spinner OFF
     }
   };
 
@@ -81,7 +86,7 @@ const Tab1: React.FC = () => {
         <IonToolbar>
           <IonTitle>Repositorios</IonTitle>
 
-          {/* Botón de refrescar */}
+          {/* Botón refrescar */}
           <IonButton slot="end" fill="clear" onClick={loadRepos}>
             <IonIcon icon={refreshOutline} />
           </IonButton>
@@ -89,26 +94,26 @@ const Tab1: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        <IonList>
-          {repos.map((repo, index) => (
-            <RepoItem
-              key={index}
-              repo={repo}
-              onDelete={() => setRepoToDelete(repo)}
-              onEdit={() => {
-                setRepoToEdit(repo);
-                setNewName(repo.name);
-                setNewDescription(repo.description || '');
-              }}
-            />
-          ))}
-        </IonList>
+        {/* Lista solo cuando NO está cargando */}
+        {!loading && (
+          <IonList>
+            {repos.map((repo) => (
+              <RepoItem
+                key={repo.name} // key correcta
+                repo={repo}
+                onDelete={() => setRepoToDelete(repo)}
+                onEdit={() => {
+                  setRepoToEdit(repo);
+                  setNewName(repo.name);
+                  setNewDescription(repo.description || '');
+                }}
+              />
+            ))}
+          </IonList>
+        )}
 
         {/* LOADING */}
-        <IonLoading
-          isOpen={loading}
-          message="Cargando repositorios..."
-        />
+        <LoadingSpinner isOpen={loading} />
 
         {/* ERROR */}
         <IonToast
@@ -116,6 +121,7 @@ const Tab1: React.FC = () => {
           message={error}
           duration={2000}
           color="danger"
+          onDidDismiss={() => setError('')}
         />
 
         {/* CONFIRMAR DELETE */}
